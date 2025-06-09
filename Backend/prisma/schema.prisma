@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id       Int    @id @default(autoincrement())
+  username String
+  email    String @unique
+  password String
+  role     Role   @default(Users)
+
+  todos TodoList[]
+}
+
+model TodoList {
+  id         Int      @id @default(autoincrement())
+  title      String
+  descrition String
+  completed  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  userId Int
+  user   Users @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+  Admin
+  Users
+}
