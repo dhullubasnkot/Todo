@@ -2,6 +2,7 @@ import pool from "./mysqlclients";
 export const SqlTodoList = {
   async getAllTodoList() {
     const [rows] = await pool.query("SELECT * FROM todolist");
+    return rows;
   },
 
   async createTodoList(title: string, description: string, userId: number) {
@@ -10,5 +11,12 @@ export const SqlTodoList = {
       [title, description, userId]
     );
     return result;
+  },
+
+  async getTodosByUserId(userId: number) {
+    const [rows] = await pool.query("SELECT * FROM todolist WHERE userId = ?", [
+      userId,
+    ]);
+    return rows;
   },
 };
