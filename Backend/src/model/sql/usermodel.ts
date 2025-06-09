@@ -1,28 +1,31 @@
-import { Role } from "../../generated/prisma";
-import pool from "./mysqlclients";
+import { PrismaClient, Role } from "../../generated/prisma";
+
+const prisma = new PrismaClient();
 
 export const SqluserModel = {
   async GetAllUser() {
-    const [rows] = await pool.query("SELECT * FROM users");
-    return rows;
+    return await prisma.users.findMany();
   },
 
   async CreateUsers(user: {
     username: string;
     email: string;
     password: string;
-    Role: String;
+    Role: Role;
   }) {
-    const { username, email, password, Role } = user;
-    const [result] = await pool.query(
-      "INSERT INTO users (username, email, password, Role) VALUES (?, ?, ?, ?)",
-      [username, email, password, Role]
-    );
-    return result;
+    return await prisma.users.create({
+      data: {
+        username: user.username,
+        email: user.email,
+        password: user.password,
+        role: user.Role,
+      },
+    });
   },
 
   async GetUserById(id: number) {
-    const [rows] = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
-    return (rows as any[])[0];
+    return await prisma.users.findUnique({
+      where: { id },
+    });
   },
 };

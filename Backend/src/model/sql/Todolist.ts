@@ -1,22 +1,25 @@
-import pool from "./mysqlclients";
+import { PrismaClient } from "../../generated/prisma";
+const prisma = new PrismaClient();
+
 export const SqlTodoList = {
   async getAllTodoList() {
-    const [rows] = await pool.query("SELECT * FROM todolist");
-    return rows;
+    return await prisma.todoList.findMany();
   },
 
   async createTodoList(title: string, description: string, userId: number) {
-    const [result] = await pool.query(
-      "INSERT INTO todolist (title, descrition, completed, userId) VALUES (?, ?, false, ?)",
-      [title, description, userId]
-    );
-    return result;
+    return await prisma.todoList.create({
+      data: {
+        title,
+        descrition: description,
+        completed: false,
+        userId,
+      },
+    });
   },
 
   async getTodosByUserId(userId: number) {
-    const [rows] = await pool.query("SELECT * FROM todolist WHERE userId = ?", [
-      userId,
-    ]);
-    return rows;
+    return await prisma.todoList.findMany({
+      where: { userId },
+    });
   },
 };

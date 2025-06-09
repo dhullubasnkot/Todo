@@ -27,9 +27,16 @@ model TodoList {
 
   userId Int
   user   Users @relation(fields: [userId], references: [id])
+
+  // @@index([userId])
 }
 
 enum Role {
   Admin
   Users
+}
+
+model Ads {
+  id    Int    @id @default(autoincrement())
+  title String
 }
