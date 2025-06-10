@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ correct import
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
-  const navigate = useNavigate(); // ✅ use inside component
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -34,9 +34,10 @@ export default function LoginPage() {
       }
 
       localStorage.setItem("userID", foundUser.id);
-      setMessage("✅ Login successful!");
+      localStorage.setItem("username", foundUser.username);
+      localStorage.setItem("email", foundUser.email);
 
-      // ✅ Correct way to redirect
+      setMessage("✅ Login successful!");
       navigate("/");
     } catch (err) {
       setMessage(`❌ ${err.message}`);
