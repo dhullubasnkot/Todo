@@ -1,9 +1,12 @@
 import "./App.css";
+import Navbar from "./components/navbar";
+import HomePage from "./pages/home";
+import AppRouter from "./routes/router";
 
 function App() {
   return (
     <>
-      <h1>Sujan</h1>
+      <AppRouter />
     </>
   );
 }
