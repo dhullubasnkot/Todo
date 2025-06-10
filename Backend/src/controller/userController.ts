@@ -35,3 +35,18 @@ export const GetUserByIdController = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to fetch user" });
   }
 };
+
+export const DeleteUserById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userId = Number(id);
+    const result = await SqluserModel.deleteUserAndTodos(userId);
+    if (!result) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete user and todos" });
+  }
+};

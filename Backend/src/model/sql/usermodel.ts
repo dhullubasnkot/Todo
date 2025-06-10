@@ -28,4 +28,22 @@ export const SqluserModel = {
       where: { id },
     });
   },
+
+  async deleteUserAndTodos(userId: number) {
+    return await prisma.$transaction(async (prisma) => {
+      // Delete todos first
+      await prisma.todolist.deleteMany({
+        where: { userId },
+      });
+
+      // Then delete the user
+      await prisma.users.delete({
+        where: { id: userId },
+      });
+
+      return {
+        message: `User ${userId} and their todos deleted successfully.`,
+      };
+    });
+  },
 };
