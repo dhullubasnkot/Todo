@@ -7,6 +7,8 @@ export default function HomePage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editingTodo, setEditingTodo] = useState(null);
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
+
   //fetch by id
   useEffect(() => {
     const fetchData = async () => {
@@ -80,6 +82,13 @@ export default function HomePage() {
       [name]: value,
     }));
   };
+
+  const toggleDescription = (id) => {
+    setExpandedDescriptions((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
   return (
     <div className="p-4">
       {loading && <p>Loading...</p>}
@@ -149,7 +158,21 @@ export default function HomePage() {
               >
                 <h2 className="text-xl font-bold mb-2">{item.title}</h2>
 
-                <p className="">{item.descrition}</p>
+                <p
+                  className={`${
+                    expandedDescriptions[item.id] ? "" : "line-clamp-2"
+                  } text-gray-800`}
+                >
+                  {item.descrition}
+                </p>
+                {item.descrition.length > 100 && (
+                  <button
+                    onClick={() => toggleDescription(item.id)}
+                    className="text-blue-500 text-sm mt-1 hover:underline"
+                  >
+                    {expandedDescriptions[item.id] ? "See Less" : "See More"}
+                  </button>
+                )}
 
                 <p>
                   Status: {item.completed ? "✅ Completed" : "❌ Not completed"}
