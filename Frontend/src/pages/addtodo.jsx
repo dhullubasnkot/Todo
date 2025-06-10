@@ -12,7 +12,7 @@ export default function AddTodo() {
     e.preventDefault();
     setLoading(true);
     setMessage("");
-
+    //add todo task
     try {
       const response = await fetch("http://localhost:4000/todo", {
         method: "POST",

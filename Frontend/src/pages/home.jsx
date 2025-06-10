@@ -7,7 +7,7 @@ export default function HomePage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editingTodo, setEditingTodo] = useState(null);
-
+  //fetch by id
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -26,7 +26,7 @@ export default function HomePage() {
 
     fetchData();
   }, []);
-
+  //delete by id
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`http://localhost:4000/todo/${id}`, {
@@ -44,7 +44,7 @@ export default function HomePage() {
   const handleEdit = (todo) => {
     setEditingTodo(todo);
   };
-
+  //update by id
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -56,6 +56,7 @@ export default function HomePage() {
           body: JSON.stringify({
             title: editingTodo.title,
             descrition: editingTodo.descrition,
+            completed: editingTodo.completed,
           }),
         }
       );
@@ -107,14 +108,21 @@ export default function HomePage() {
             placeholder="Description"
             required
           />
-          <input
-            name="completed"
-            value={editingTodo.completed}
-            onChange={handleChange}
-            className="block w-full mb-2 p-2 border rounded"
-            placeholder="Title"
-            required
-          />
+          <label className="block mb-2">
+            <input
+              type="checkbox"
+              name="completed"
+              checked={editingTodo.completed}
+              onChange={(e) =>
+                setEditingTodo((prev) => ({
+                  ...prev,
+                  completed: e.target.checked,
+                }))
+              }
+              className="mr-2"
+            />
+            Mark as completed
+          </label>
 
           <div className="flex gap-2">
             <button
