@@ -80,7 +80,6 @@ export default function HomePage() {
       [name]: value,
     }));
   };
-
   return (
     <div className="p-4">
       {loading && <p>Loading...</p>}
@@ -141,33 +140,39 @@ export default function HomePage() {
           </div>
         </form>
       )}
+      <div className="grid grid-cols-4 gap-4">
+        {Array.isArray(data) && data.length > 0
+          ? data.map((item) => (
+              <div
+                key={item.id}
+                className="bg-gray-100 p-4 rounded shadow mb-4"
+              >
+                <h2 className="text-xl font-bold mb-2">{item.title}</h2>
 
-      {Array.isArray(data) && data.length > 0
-        ? data.map((item) => (
-            <div key={item.id} className="bg-gray-100 p-4 rounded shadow mb-4">
-              <h2 className="text-xl font-bold mb-2">{item.title}</h2>
-              <p>{item.descrition}</p>
-              <p>
-                Status: {item.completed ? "✅ Completed" : "❌ Not completed"}
-              </p>
-              <p className="text-sm text-gray-600">{item.createdAt}</p>
-              <div className="mt-2 flex gap-2">
-                <button
-                  className="bg-blue-500 text-white px-3 py-1 rounded"
-                  onClick={() => handleEdit(item)}
-                >
-                  Update
-                </button>
-                <button
-                  className="bg-red-500 text-white px-3 py-1 rounded"
-                  onClick={() => handleDelete(item.id)}
-                >
-                  Delete
-                </button>
+                <p className="">{item.descrition}</p>
+
+                <p>
+                  Status: {item.completed ? "✅ Completed" : "❌ Not completed"}
+                </p>
+                <p className="text-sm text-gray-600">{item.createdAt}</p>
+                <div className="mt-2 flex gap-2">
+                  <button
+                    className="bg-blue-500 text-white px-3 py-1 rounded"
+                    onClick={() => handleEdit(item)}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-3 py-1 rounded"
+                    onClick={() => handleDelete(item.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-            </div>
-          ))
-        : !loading && <p>No todo items found.</p>}
+            ))
+          : !loading && <p>No todo items found.</p>}
+      </div>
     </div>
   );
 }

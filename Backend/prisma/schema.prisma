@@ -16,7 +16,7 @@ model ads {
 model todolist {
   id         Int      @id @default(autoincrement())
   title      String
-  descrition String
+  descrition String   @db.VarChar(1000)
   completed  Boolean  @default(false)
   createdAt  DateTime @default(now())
   userId     Int
