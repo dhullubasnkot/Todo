@@ -8,35 +8,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  id       Int    @id @default(autoincrement())
-  username String
-  email    String @unique
-  password String
-  role     Role   @default(Users)
-
-  todos TodoList[]
+model ads {
+  id    Int    @id @default(autoincrement())
+  title String
 }
 
-model TodoList {
+model todolist {
   id         Int      @id @default(autoincrement())
   title      String
   descrition String
   completed  Boolean  @default(false)
   createdAt  DateTime @default(now())
+  userId     Int
 
-  userId Int
-  user   Users @relation(fields: [userId], references: [id])
-
-  // @@index([userId])
+  @@index([userId], map: "TodoList_userId_fkey")
 }
 
-enum Role {
+model users {
+  id       Int        @id @default(autoincrement())
+  username String
+  email    String     @unique(map: "Users_email_key")
+  password String
+  role     users_role @default(Users)
+}
+
+enum users_role {
   Admin
   Users
 }
 
 model Ads {
-  id    Int    @id @default(autoincrement())
-  title String
+  id   Int    @id @default(autoincrement())
+  name String
 }

@@ -1,4 +1,4 @@
-import { PrismaClient, Role } from "../../generated/prisma";
+import { PrismaClient, users_role } from "../../generated/prisma";
 
 const prisma = new PrismaClient();
 
@@ -11,7 +11,7 @@ export const SqluserModel = {
     username: string;
     email: string;
     password: string;
-    Role: Role;
+    Role: users_role;
   }) {
     return await prisma.users.create({
       data: {
