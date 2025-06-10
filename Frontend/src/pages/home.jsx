@@ -6,7 +6,7 @@ export default function HomePage() {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [editingTodo, setEditingTodo] = useState(null); // For update form
+  const [editingTodo, setEditingTodo] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {

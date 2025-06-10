@@ -20,14 +20,20 @@ export default function Navbar() {
     window.location.href = "/";
   };
 
+  const goHome = () => {
+    window.location.href = "/";
+  };
+
   return (
     <div className="flex justify-between p-4 bg-gray-100">
       <div>
-        <p className="font-bold text-xl">TODO</p>
+        <button onClick={goHome} className="font-bold text-xl">
+          TODO
+        </button>
       </div>
 
       <div className="flex items-center gap-4">
-        <a href="/add" className="text-blue-500 hover:underline">
+        <a href="/addtodo" className="text-blue-500 hover:underline">
           Add
         </a>
 
