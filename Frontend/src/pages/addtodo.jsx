@@ -1,36 +1,22 @@
 "use client";
 import { useState } from "react";
+import CreateTodo from "../api/todos/createtodos";
 
 export default function AddTodo() {
-  const userId = parseInt(localStorage.getItem("userID") || "0");
   const [title, setTitle] = useState("");
   const [descrition, setDescrition] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  const userId = parseInt(localStorage.getItem("userID") || "0");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
-    //add todo task
+
     try {
-      const response = await fetch("http://localhost:4000/todo", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          descrition,
-          completed: false,
-          userId,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to add todo");
-      }
-
+      await CreateTodo({ title, descrition, userId });
       setTitle("");
       setDescrition("");
       setMessage("✅ Todo added successfully!");

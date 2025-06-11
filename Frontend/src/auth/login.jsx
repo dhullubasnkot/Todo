@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import loginUser from "../api/users/getAllusers";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -14,29 +15,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:4000/users", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      const users = await res.json();
-
-      if (!Array.isArray(users)) {
-        throw new Error("Unexpected response from server");
-      }
-
-      const foundUser = users.find(
-        (u) => u.email === form.email && u.password === form.password
-      );
-
-      if (!foundUser) {
-        throw new Error("Invalid email or password");
-      }
-
-      localStorage.setItem("userID", foundUser.id);
-      localStorage.setItem("username", foundUser.username);
-      localStorage.setItem("email", foundUser.email);
-
+      await loginUser(form);
       setMessage("✅ Login successful!");
       navigate("/");
     } catch (err) {

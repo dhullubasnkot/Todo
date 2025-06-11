@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import signupUser from "../api/users/createusers";
 
 export default function SignupPage() {
   const [form, setForm] = useState({
@@ -17,15 +18,7 @@ export default function SignupPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:4000/users/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      const result = await res.json();
-      if (!res.ok) throw new Error(result.message || "Signup failed");
-
+      await signupUser(form);
       setMessage("✅ Signup successful! You can now log in.");
       setForm({ username: "", email: "", password: "" });
     } catch (err) {
