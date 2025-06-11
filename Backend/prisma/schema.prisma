@@ -25,7 +25,7 @@ model todolist {
 }
 
 model users {
-  id       Int        @id @default(autoincrement())
+  id       String     @id @default(dbgenerated()) @db.VarChar(50)
   username String
   email    String     @unique(map: "Users_email_key")
   password String

@@ -46,4 +46,13 @@ export const SqluserModel = {
       };
     });
   },
+
+  async checkUserCredentials(email: string, password: string) {
+    return await prisma.users.findFirst({
+      where: {
+        email,
+        password,
+      },
+    });
+  },
 };
