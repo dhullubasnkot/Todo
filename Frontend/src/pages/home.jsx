@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import GetAllTodos from "../api/todos/getalltodos";
 import useUpdateTodos from "../api/todos/updatetodos";
 import handleDelete from "../api/todos/deletetodos";
+import EditTodoForm from "./updatetodo";
 
 export default function HomePage() {
   const [data, setData] = useState([]);
@@ -50,62 +51,12 @@ export default function HomePage() {
     <div className="p-4 sm:p-6 md:p-8">
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}
-
-      {editingTodo && (
-        <form
-          onSubmit={handleUpdateSubmit}
-          className="mb-6 bg-yellow-100 p-4 sm:p-6 rounded"
-        >
-          <h3 className="text-lg font-bold mb-2">Edit Todo</h3>
-          <input
-            name="title"
-            value={editingTodo.title}
-            onChange={handleChange}
-            className="block w-full mb-2 p-2 border rounded"
-            placeholder="Title"
-            required
-          />
-          <textarea
-            name="descrition"
-            value={editingTodo.descrition}
-            onChange={handleChange}
-            className="block w-full mb-2 p-2 border rounded"
-            placeholder="Description"
-            required
-          />
-          <label className="block mb-2">
-            <input
-              type="checkbox"
-              name="completed"
-              checked={editingTodo.completed}
-              onChange={(e) =>
-                setEditingTodo((prev) => ({
-                  ...prev,
-                  completed: e.target.checked,
-                }))
-              }
-              className="mr-2"
-            />
-            Mark as completed
-          </label>
-
-          <div className="flex gap-2">
-            <button
-              type="submit"
-              className="bg-green-500 text-white px-4 py-1 rounded"
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              onClick={() => setEditingTodo(null)}
-              className="bg-gray-400 text-white px-4 py-1 rounded"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      )}
+      <EditTodoForm
+        editingTodo={editingTodo}
+        setEditingTodo={setEditingTodo}
+        handleUpdateSubmit={handleUpdateSubmit}
+        handleChange={handleChange}
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {Array.isArray(data) && data.length > 0 ? (
