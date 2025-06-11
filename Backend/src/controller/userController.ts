@@ -51,26 +51,19 @@ export const DeleteUserById = async (req: Request, res: Response) => {
   }
 };
 
-// export const CheckUserCredentialsController = async (
-//   req: Request,
-//   res: Response
-// ) => {
-//   try {
-//     const { email, password } = req.body;
-//     const user = await SqluserModel.checkUserCredentials(email, password);
-
-//     if (!user) {
-//       res.status(401).json({ error: "Invalid credentials" });
-//       return;
-//     }
-
-//     const sessionId = generateUserId(20);
-
-//     res.status(200).json({
-//       user,
-//       sessionId,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ error: "Failed to check credentials" });
-//   }
-// };
+export const CheckUserCredentialsController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { email, password } = req.body;
+    const user = await SqluserModel.checkUserCredentials(email, password);
+    if (!user) {
+      res.status(401).json({ error: "Invalid credentials" });
+      return;
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to check credentials" });
+  }
+};
