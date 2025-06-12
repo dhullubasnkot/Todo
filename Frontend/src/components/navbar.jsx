@@ -5,17 +5,20 @@ export default function Navbar() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const userId = localStorage.getItem("userID");
-    const userName = localStorage.getItem("username");
+    const userId = localStorage.getItem("userId");
+    const userEmail = localStorage.getItem("email");
+    const username = localStorage.getItem("username");
 
-    if (userId && userName) {
-      setUser({ id: userId, name: userName });
+    if (userId && userEmail && username) {
+      setUser({ id: userId, email: userEmail, name: username });
     }
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("userID");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("email");
     localStorage.removeItem("username");
+    localStorage.removeItem("token");
     setUser(null);
     window.location.href = "/";
   };

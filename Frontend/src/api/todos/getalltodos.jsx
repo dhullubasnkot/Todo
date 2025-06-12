@@ -1,6 +1,6 @@
-export default async function GetAllTodos(userID) {
+export default async function GetAllTodos(userId) {
   try {
-    const response = await fetch(`http://localhost:4000/todo/${userID}`);
+    const response = await fetch(`http://localhost:4000/todo/${userId}`);
     if (!response.ok) {
       throw new Error("Failed to fetch todos");
     }

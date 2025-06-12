@@ -1,4 +1,5 @@
-import { PrismaClient, users_role } from "../../generated/prisma";
+import { PrismaClient, users_role, login } from "../../generated/prisma";
+import { randomUUID } from "crypto";
 
 const prisma = new PrismaClient();
 
@@ -25,7 +26,7 @@ export const SqluserModel = {
 
   async GetUserById(id: number) {
     return await prisma.users.findUnique({
-      where: { id },
+      where: { id: id.toString() },
     });
   },
 
@@ -33,12 +34,12 @@ export const SqluserModel = {
     return await prisma.$transaction(async (prisma) => {
       // Delete todos first
       await prisma.todolist.deleteMany({
-        where: { userId },
+        where: { userId: userId.toString() },
       });
 
       // Then delete the user
       await prisma.users.delete({
-        where: { id: userId },
+        where: { id: userId.toString() },
       });
 
       return {
@@ -48,11 +49,32 @@ export const SqluserModel = {
   },
 
   async checkUserCredentials(email: string, password: string) {
-    return await prisma.users.findFirst({
-      where: {
+    const user = await prisma.users.findFirst({
+      where: { email, password },
+    });
+
+    if (!user) return null;
+
+    await prisma.login.deleteMany({
+      where: { id: user.id },
+    });
+
+    const token = randomUUID();
+
+    await prisma.login.create({
+      data: {
+        id: user.id,
         email,
         password,
+        token,
+        userId: user.id,
       },
     });
+
+    return { user, token };
+  },
+
+  async GetAllLoggedInUsers() {
+    return await prisma.login.findMany();
   },
 };

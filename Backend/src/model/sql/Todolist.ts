@@ -12,20 +12,20 @@ export const SqlTodoList = {
     });
   },
 
-  async createTodoList(title: string, description: string, userId: number) {
+  async createTodoList(title: string, description: string, userId: string) {
     return await prisma.todolist.create({
       data: {
         title,
         descrition: description,
         completed: false,
-        userId,
+        userId: String(userId),
       },
     });
   },
 
-  async getTodosByUserId(userId: number) {
+  async getTodosByUserId(userId: string) {
     return await prisma.todolist.findMany({
-      where: { userId },
+      where: { userId: String(userId) },
     });
   },
   async updateTaskPrisma(data: {
@@ -43,7 +43,7 @@ export const SqlTodoList = {
         title: data.title,
         descrition: data.descrition,
         completed: data.completed,
-        userId: data.userId,
+        userId: String(data.userId),
       },
     });
   },

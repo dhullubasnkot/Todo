@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import loginUser from "../api/users/getAllusers";
+import CreateLoginUsers from "../api/loginUsers";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -15,9 +15,22 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      await loginUser(form);
-      setMessage("✅ Login successful!");
-      navigate("/");
+      const result = await CreateLoginUsers(form);
+
+      if (result && result.token && result.user) {
+        const { token, user } = result;
+
+        // Save to localStorage
+        localStorage.setItem("token", token);
+        localStorage.setItem("userId", user.id);
+        localStorage.setItem("email", user.email);
+        localStorage.setItem("username", user.username);
+
+        setMessage("✅ Login successful!");
+        navigate("/"); // redirect
+      } else {
+        throw new Error("Invalid login response");
+      }
     } catch (err) {
       setMessage(`❌ ${err.message}`);
     }

@@ -23,7 +23,7 @@ export const getTodosByUserId = async (req: Request, res: Response) => {
       res.status(400).json({ message: "Missing userId parameter" });
       return;
     }
-    const todos = await SqlTodoList.getTodosByUserId(Number(userId));
+    const todos = await SqlTodoList.getTodosByUserId(userId);
     res.status(200).json(todos);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch todos", error });

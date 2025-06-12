@@ -3,28 +3,22 @@ import { useState } from "react";
 import signupUser from "../api/users/createusers";
 
 export default function SignupPage() {
-  const [form, setForm] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
+  const [form, setForm] = useState({ username: "", email: "", password: "" });
   const [message, setMessage] = useState("");
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) =>
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-
     try {
       await signupUser(form);
-      setMessage("✅ Signup successful! You can now log in.");
+      setMessage("Signup successful! You can now log in.");
       setForm({ username: "", email: "", password: "" });
     } catch (err) {
-      setMessage(`❌ ${err.message}`);
+      setMessage("Signup failed: " + err.message);
     }
-  };
+  }
 
   return (
     <div className="p-6 max-w-md mx-auto">

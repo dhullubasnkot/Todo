@@ -24,6 +24,7 @@ export const GetAllUserController = async (req: Request, res: Response) => {
 export const GetUserByIdController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    console.log("Fetching user with ID:", id);
     const userId = Number(id);
     const user = await SqluserModel.GetUserById(userId);
     if (!user) {
@@ -65,5 +66,17 @@ export const CheckUserCredentialsController = async (
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: "Failed to check credentials" });
+  }
+};
+
+export const GetAllUsersLoggedConroller = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const userslogged = await SqluserModel.GetAllLoggedInUsers();
+    res.status(200).json(userslogged);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch users" });
   }
 };

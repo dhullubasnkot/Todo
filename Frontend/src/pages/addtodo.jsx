@@ -8,7 +8,8 @@ export default function AddTodo() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const userId = parseInt(localStorage.getItem("userID") || "0");
+  // userId as string, NOT number
+  const userId = localStorage.getItem("userId") || "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

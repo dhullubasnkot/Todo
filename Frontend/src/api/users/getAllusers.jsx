@@ -18,7 +18,6 @@ const loginUser = async (formData) => {
     throw new Error("Invalid email or password");
   }
 
- 
   localStorage.setItem("userID", foundUser.id);
   localStorage.setItem("username", foundUser.username);
   localStorage.setItem("email", foundUser.email);

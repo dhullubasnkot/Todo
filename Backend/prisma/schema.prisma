@@ -8,9 +8,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model ads {
-  id    Int    @id @default(autoincrement())
-  title String
+model users {
+  id       String     @id @default(uuid()) @db.VarChar(100)
+  username String
+  email    String     @unique
+  password String
+  role     users_role @default(Users)
+
+  login login? // relation field (no relation attribute here)
+  todos todolist[] @relation("UserTodos")
+}
+
+model login {
+  id        String   @id @default(uuid()) @db.VarChar(100)
+  email     String   @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  token     String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+
+  userId String @unique
+  user   users  @relation(fields: [userId], references: [id]) // ✅ proper relation
 }
 
 model todolist {
@@ -19,25 +36,19 @@ model todolist {
   descrition String   @db.VarChar(1000)
   completed  Boolean  @default(false)
   createdAt  DateTime @default(now())
-  userId     Int
+
+  userId String
+  user   users  @relation("UserTodos", fields: [userId], references: [id])
 
   @@index([userId], map: "TodoList_userId_fkey")
-}
-
-model users {
-  id       String     @id @default(dbgenerated()) @db.VarChar(50)
-  username String
-  email    String     @unique(map: "Users_email_key")
-  password String
-  role     users_role @default(Users)
-}
-
-enum users_role {
-  Admin
-  Users
 }
 
 model Ads {
   id   Int    @id @default(autoincrement())
   name String
+}
+
+enum users_role {
+  Admin
+  Users
 }
