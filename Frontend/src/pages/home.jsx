@@ -22,7 +22,8 @@ export default function HomePage() {
     const userID = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
-    if (!userID || !token || !email) {
+    const username = localStorage.getItem("username");
+    if (!userID || !token || !email || !username) {
       setError("User ID not found or Token not found return to login page");
       setLoading(false);
       return;
@@ -30,7 +31,7 @@ export default function HomePage() {
 
     const fetchData = async () => {
       try {
-        const todos = await GetAllTodos(userID || token);
+        const todos = await GetAllTodos(userID || token || username);
         setData(todos);
       } catch (err) {
         setError(err.message || "Failed to fetch todos");
