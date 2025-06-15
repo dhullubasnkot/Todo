@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import CreateLoginUsers from "../api/loginUsers";
 import EditTodoForm from "../pages/updatetodo";
 
@@ -7,6 +8,8 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const seconds = 10;
+  const expiresInDays = seconds / 86400;
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,12 +25,19 @@ export default function LoginPage() {
         const { token, user } = result;
 
         // Save to localStorage
-        localStorage.setItem("token", token);
+        // localStorage.setItem("token", token);
 
-        localStorage.setItem("userId", user.id);
-        localStorage.setItem("email", user.email);
-        localStorage.setItem("username", user.username);
-
+        // localStorage.setItem("userId", user.id);
+        // localStorage.setItem("email", user.email);
+        // localStorage.setItem("username", user.username);
+        // Set data in cookies
+        Cookies.set("token", token, { path: "/", expires: expiresInDays });
+        Cookies.set("userId", user.id, { path: "/", expires: expiresInDays });
+        Cookies.set("email", user.email, { path: "/", expires: expiresInDays });
+        Cookies.set("username", user.username, {
+          path: "/",
+          expires: expiresInDays,
+        });
         setMessage(" Login successful!");
         navigate("/");
       } else {

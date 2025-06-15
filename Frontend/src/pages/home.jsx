@@ -3,6 +3,7 @@ import GetAllTodos from "../api/todos/getalltodos";
 import useUpdateTodos from "../api/todos/updatetodos";
 import handleDelete from "../api/todos/deletetodos";
 import EditTodoForm from "./updatetodo";
+import Cookies from "js-cookie";
 
 export default function HomePage() {
   const [data, setData] = useState([]);
@@ -19,11 +20,18 @@ export default function HomePage() {
   );
 
   useEffect(() => {
-    const userID = localStorage.getItem("userId");
-    const token = localStorage.getItem("token");
-    const email = localStorage.getItem("email");
-    const username = localStorage.getItem("username");
-    if (!userID || !token || !email || !username) {
+    // const userID = localStorage.getItem("userId");
+    // const token = localStorage.getItem("token");
+    // const email = localStorage.getItem("email");
+    // const username = localStorage.getItem("username");
+
+    //get from saved cookies
+
+    const userId = Cookies.get("userId");
+    const token = Cookies.get("token");
+    const email = Cookies.get("email");
+    const username = Cookies.get("username");
+    if (!userId || !token || !email || !username) {
       setError("User ID not found or Token not found return to login page");
       setLoading(false);
       return;
@@ -31,7 +39,7 @@ export default function HomePage() {
 
     const fetchData = async () => {
       try {
-        const todos = await GetAllTodos(userID || token || username);
+        const todos = await GetAllTodos(userId || token || username);
         setData(todos);
       } catch (err) {
         setError(err.message || "Failed to fetch todos");
