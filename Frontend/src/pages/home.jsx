@@ -4,6 +4,7 @@ import useUpdateTodos from "../api/todos/updatetodos";
 import handleDelete from "../api/todos/deletetodos";
 import EditTodoForm from "./updatetodo";
 import Cookies from "js-cookie";
+import { Navigate } from "react-router-dom";
 
 export default function HomePage() {
   const [data, setData] = useState([]);
@@ -20,26 +21,19 @@ export default function HomePage() {
   );
 
   useEffect(() => {
-    // const userID = localStorage.getItem("userId");
-    // const token = localStorage.getItem("token");
-    // const email = localStorage.getItem("email");
-    // const username = localStorage.getItem("username");
+    const userId = localStorage.getItem("userId");
+    console.log("✅ userId:", userId);
 
-    //get from saved cookies
-
-    const userId = Cookies.get("userId");
-    const token = Cookies.get("token");
-    const email = Cookies.get("email");
-    const username = Cookies.get("username");
-    if (!userId || !token || !email || !username) {
-      setError("User ID not found or Token not found return to login page");
+    if (!userId) {
+      setError("User ID not found. Please login.");
       setLoading(false);
       return;
     }
 
     const fetchData = async () => {
       try {
-        const todos = await GetAllTodos(userId || token || username);
+        const todos = await GetAllTodos(userId);
+        console.log("✅ Todos:", todos); // Debugging
         setData(todos);
       } catch (err) {
         setError(err.message || "Failed to fetch todos");
@@ -49,6 +43,18 @@ export default function HomePage() {
     };
 
     fetchData();
+  }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const token = Cookies.get("token");
+      if (!token) {
+        console.log(" Token expired. Logging out...");
+        localStorage.removeItem("userId");
+        Navigate("/login");
+      }
+    });
+
+    return () => clearInterval(interval);
   }, []);
 
   const toggleDescription = (id) => {
