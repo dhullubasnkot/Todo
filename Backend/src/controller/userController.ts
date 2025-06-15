@@ -66,7 +66,7 @@ export const CheckUserCredentialsController = async (
 
     const { user, token } = result;
 
-    const EXPIRY_TIME_IN_SECONDS = 10;
+    const EXPIRY_TIME_IN_SECONDS = 60;
     res.cookie("token", token, {
       path: "/",
       httpOnly: true,
