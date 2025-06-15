@@ -11,6 +11,7 @@ const useUpdateTodos = (editingTodo, setEditingTodo, setData, setError) => {
             title: editingTodo.title,
             descrition: editingTodo.descrition,
             completed: editingTodo.completed,
+            userId: localStorage.getItem("userId"),
           }),
         }
       );

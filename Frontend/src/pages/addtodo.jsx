@@ -8,7 +8,7 @@ export default function AddTodo() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // userId as string, NOT number
+
   const userId = localStorage.getItem("userId") || "";
 
   const handleSubmit = async (e) => {

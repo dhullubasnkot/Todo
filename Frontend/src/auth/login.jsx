@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateLoginUsers from "../api/loginUsers";
+import EditTodoForm from "../pages/updatetodo";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -22,12 +23,13 @@ export default function LoginPage() {
 
         // Save to localStorage
         localStorage.setItem("token", token);
+        // localStorage.setItem("id", EditTodoForm.id);
         localStorage.setItem("userId", user.id);
         localStorage.setItem("email", user.email);
         localStorage.setItem("username", user.username);
 
         setMessage("✅ Login successful!");
-        navigate("/"); // redirect
+        navigate("/");
       } else {
         throw new Error("Invalid login response");
       }
