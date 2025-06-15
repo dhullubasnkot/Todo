@@ -20,15 +20,17 @@ export default function HomePage() {
 
   useEffect(() => {
     const userID = localStorage.getItem("userId");
-    if (!userID) {
-      setError("User ID not found");
+    const token = localStorage.getItem("token");
+    const email = localStorage.getItem("email");
+    if (!userID || !token || !email) {
+      setError("User ID not found or Token not found return to login page");
       setLoading(false);
       return;
     }
 
     const fetchData = async () => {
       try {
-        const todos = await GetAllTodos(userID);
+        const todos = await GetAllTodos(userID || token);
         setData(todos);
       } catch (err) {
         setError(err.message || "Failed to fetch todos");
