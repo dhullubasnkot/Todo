@@ -33,7 +33,7 @@ export const SqlTodoList = {
     title: string;
     descrition: string;
     completed: boolean;
-    userId: number;
+    userId: string;
   }) {
     return await prisma.todolist.update({
       where: {

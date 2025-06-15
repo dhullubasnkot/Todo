@@ -15,7 +15,7 @@ model users {
   password String
   role     users_role @default(Users)
 
-  login login? // relation field (no relation attribute here)
+  login login?
   todos todolist[] @relation("UserTodos")
 }
 
@@ -27,7 +27,7 @@ model login {
   createdAt DateTime @default(now())
 
   userId String @unique
-  user   users  @relation(fields: [userId], references: [id]) // ✅ proper relation
+  user   users  @relation(fields: [userId], references: [id])
 }
 
 model todolist {
