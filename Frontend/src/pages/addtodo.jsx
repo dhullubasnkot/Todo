@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import CreateTodo from "../api/todos/createtodos";
+import { useNavigate } from "react-router-dom";
 
 export default function AddTodo() {
   const [title, setTitle] = useState("");
@@ -8,8 +9,8 @@ export default function AddTodo() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-
-  const userId = localStorage.getItem("userId") || "";
+  const navigate = useNavigate();
+  const userId = localStorage.getItem("userId");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +21,10 @@ export default function AddTodo() {
       await CreateTodo({ title, descrition, userId });
       setTitle("");
       setDescrition("");
-      setMessage("✅ Todo added successfully!");
+      setMessage("Todo added successfully!");
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     } catch (err) {
       setMessage("❌ Error adding todo");
     } finally {

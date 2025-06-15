@@ -23,18 +23,18 @@ export default function LoginPage() {
 
         // Save to localStorage
         localStorage.setItem("token", token);
-        // localStorage.setItem("id", EditTodoForm.id);
+
         localStorage.setItem("userId", user.id);
         localStorage.setItem("email", user.email);
         localStorage.setItem("username", user.username);
 
-        setMessage("✅ Login successful!");
+        setMessage(" Login successful!");
         navigate("/");
       } else {
         throw new Error("Invalid login response");
       }
     } catch (err) {
-      setMessage(`❌ ${err.message}`);
+      setMessage(` ${err.message}`);
     }
   };
 
