@@ -15,8 +15,9 @@ model users {
   password String
   role     users_role @default(Users)
 
-  login login?
-  todos todolist[] @relation("UserTodos")
+  // login login?
+  todos  todolist[] @relation("UserTodos")
+  logins login[]
 }
 
 model login {
@@ -26,8 +27,10 @@ model login {
   token     String   @unique @db.VarChar(255)
   createdAt DateTime @default(now())
 
-  userId String @unique
+  userId String
   user   users  @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model todolist {

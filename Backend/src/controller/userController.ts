@@ -61,18 +61,19 @@ export const CheckUserCredentialsController = async (
     const result = await SqluserModel.checkUserCredentials(email, password);
 
     if (!result || !result.user || !result.token) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      res.status(401).json({ error: "Invalid credentials" });
+      return;
     }
 
     const { user, token } = result;
 
-    const EXPIRY_TIME_IN_SECONDS = 60;
-    res.cookie("token", token, {
+    // Set cookie with token
+    const EXPIRY_TIME_IN_SECONDS = 3000;
+    res.cookie("tokentest", token, {
       path: "/",
       httpOnly: true,
       expires: new Date(Date.now() + EXPIRY_TIME_IN_SECONDS * 1000),
       sameSite: "lax",
-      // secure: process.env.ENVIRONMENT === "prod",
       secure: false,
     });
 
@@ -102,3 +103,35 @@ export const GetAllUsersLoggedConroller = async (
     res.status(500).json({ error: "Failed to fetch users" });
   }
 };
+
+export const LogoutUserController = async (req: Request, res: Response) => {
+  try {
+    const token = req.cookies.token;
+
+    if (!token) {
+      res.status(400).json({ error: "No token provided" });
+      return;
+    }
+
+    const result = await SqluserModel.logoutUserByToken(token);
+
+    res.clearCookie("token", { path: "/" });
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to logout user" });
+  }
+};
+
+// export const GetCurrentUserSessionController = (
+//   req: Request,
+//   res: Response
+// ) => {
+//   if (req.session.userId && req.session.email) {
+//     res.status(200).json({
+//       userId: req.session.userId,
+//       email: req.session.email,
+//     });
+//   } else {
+//     res.status(401).json({ error: "No active session" });
+//   }
+// };

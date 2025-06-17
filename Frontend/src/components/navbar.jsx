@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+import { logoutUser } from "../api/users/logoutuser";
+import Cookies from "js-cookie";
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
@@ -14,12 +16,20 @@ export default function Navbar() {
     }
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+
     localStorage.removeItem("userId");
     localStorage.removeItem("email");
     localStorage.removeItem("username");
-    localStorage.removeItem("token");
+    Cookies.remove("token");
+
     setUser(null);
+    window.location.href = "/";
     window.location.href = "/";
   };
 
@@ -45,19 +55,17 @@ export default function Navbar() {
             Login/Signup
           </a>
         ) : (
-          <>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">
-                {user.name.charAt(0).toUpperCase()}
-              </div>
-              <button
-                onClick={handleLogout}
-                className="text-red-500 hover:underline"
-              >
-                Logout
-              </button>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">
+              {user.name.charAt(0).toUpperCase()}
             </div>
-          </>
+            <button
+              onClick={handleLogout}
+              className="text-red-500 hover:underline"
+            >
+              Logout
+            </button>
+          </div>
         )}
       </div>
     </div>

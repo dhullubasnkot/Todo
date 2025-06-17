@@ -5,7 +5,6 @@ import handleDelete from "../api/todos/deletetodos";
 import EditTodoForm from "./updatetodo";
 import Cookies from "js-cookie";
 import { Navigate } from "react-router-dom";
-
 export default function HomePage() {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
@@ -44,18 +43,26 @@ export default function HomePage() {
 
     fetchData();
   }, []);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const token = Cookies.get("token");
-      if (!token) {
-        console.log(" Token expired. Logging out...");
-        localStorage.removeItem("userId");
-        Navigate("/login");
-      }
-    });
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const token = Cookies.get("token");
+  //     if (!token) {
+  //       console.log(" Token expired. Logging out...");
+  //       localStorage.removeItem("userId");
+  //       Navigate("/login");
+  //     }
+  //   }, 5000);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
+  // Logout if "tokentest" cookie expires
+  // useEffect(() => {
+  //   const token = Cookies.get("tokentest");
+  //   if (!token) {
+  //     localStorage.removeItem("userId");
+  //     window.location.href = "/login";
+  //   }
+  // }, []);
 
   const toggleDescription = (id) => {
     setExpandedDescriptions((prev) => ({

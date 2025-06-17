@@ -77,4 +77,11 @@ export const SqluserModel = {
   async GetAllLoggedInUsers() {
     return await prisma.login.findMany();
   },
+
+  async logoutUserByToken(token: string) {
+    await prisma.login.deleteMany({
+      where: { token },
+    });
+    return { message: "User logged out successfully." };
+  },
 };
