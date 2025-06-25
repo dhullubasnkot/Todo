@@ -19,5 +19,7 @@ router.delete("/:id", DeleteUserById);
 router.post("/check-credentials", CheckUserCredentialsController);
 router.delete("/logout", LogoutUserController);
 // router.get("/session/current", GetCurrentUserSessionController);
+// router.get("/session/current", GetCurrentUserSessionController);
+
 
 export default router;
